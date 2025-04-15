@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+
+.user-list-container {
+  font-family: 'Source Sans Pro', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #4D4F5C;
+}
+
+.user-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user-list-header h2 {
+  color: #153376;
+  margin: 0;
+}
+
+.add-button {
+  background-color: #153376;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-button:hover {
+  background-color: #112a5e;
+}
+
+.error-message {
+  background-color: #ffeeee;
+  color: #ff3860;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.form-section {
+  margin-bottom: 30px;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.form-section h3 {
+  color: #153376;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #4D4F5C;
+}
+
+.no-users {
+  text-align: center;
+  padding: 30px;
+  font-size: 16px;
+  color: #4D4F5C;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.users-table-container {
+  overflow-x: auto;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.users-table th,
+.users-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.users-table th {
+  background-color: #f6f6f6;
+  color: #153376;
+  font-weight: 600;
+}
+
+.users-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-button,
+.delete-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.edit-button {
+  background-color: #153376;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #112a5e;
+}
+
+.delete-button {
+  background-color: #ff3860;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #e01e46;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-message {
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: center;
+  color: #4D4F5C;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.modal-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.cancel-button {
+  background-color: #f1f1f1;
+  color: #4D4F5C;
+}
+
+.cancel-button:hover {
+  background-color: #e1e1e1;
+}
+
+.confirm-button {
+  background-color: #ff3860;
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: #e01e46;
+}
+
+@media (max-width: 768px) {
+  .user-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+} 

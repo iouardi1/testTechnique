@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+
+.file-upload {
+  font-family: 'Source Sans Pro', sans-serif;
+  margin-bottom: 20px;
+}
+
+.upload-container {
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  cursor: pointer;
+  color: #4D4F5C;
+}
+
+.upload-icon {
+  font-size: 32px;
+  color: #153376;
+  margin-bottom: 10px;
+}
+
+.upload-text {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.upload-hint {
+  font-size: 14px;
+  color: #888;
+}
+
+.file-input {
+  display: none;
+}
+
+.preview-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.image-preview {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.change-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(21, 51, 118, 0.8);
+  color: white;
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.change-image:hover {
+  background-color: rgba(21, 51, 118, 1);
+}
+
+.upload-error {
+  color: #ff3860;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+} 

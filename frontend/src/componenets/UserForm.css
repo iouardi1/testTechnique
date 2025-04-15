@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+
+.user-form-container {
+  font-family: 'Source Sans Pro', sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.user-form {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.form-error-message {
+  background-color: #ffeeee;
+  color: #ff3860;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #153376;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16px;
+  color: #4D4F5C;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #153376;
+}
+
+.error {
+  color: #ff3860;
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
+}
+
+.form-actions {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.submit-button {
+  background-color: #153376;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #112a5e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .user-form-container {
+    padding: 10px;
+  }
+  
+  .user-form {
+    padding: 20px;
+  }
+} 
