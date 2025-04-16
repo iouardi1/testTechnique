@@ -1,44 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import './UserList.css';
 import UserForm from './UserForm';
+import api from '../tools/api';
 
-const API_URL = `${process.env.REACT_APP_API_URL || 'http://localhost:3002'}/api/users`;
-
-// Dummy data for users
-const dummyUsers = [
-  {
-    id: 1,
-    first_name: 'Alice',
-    last_name: 'Smith',
-    email: 'alice@example.com',
-    country: 'France',
-    city: 'Paris',
-    phone_number: '0123456789',
-    position: 'Engineer',
-  },
-  {
-    id: 2,
-    first_name: 'Bob',
-    last_name: 'Brown',
-    email: 'bob@example.com',
-    country: 'Germany',
-    city: 'Berlin',
-    phone_number: '0987654321',
-    position: 'Designer',
-  },
-  {
-    id: 3,
-    first_name: 'Carol',
-    last_name: 'Jones',
-    email: 'carol@example.com',
-    country: 'Spain',
-    city: 'Madrid',
-    phone_number: '1122334455',
-    position: 'Manager',
-  },
-];
+// API endpoint
+const USERS_ENDPOINT = '/api/users';
 
 // Simple confirmation modal component
 const ConfirmationModal = ({
@@ -81,6 +48,7 @@ ConfirmationModal.propTypes = {
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [editUser, setEditUser] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [confirmModal, setConfirmModal] = useState({
@@ -89,10 +57,26 @@ const UserList = () => {
     message: '',
   });
 
-  // Initialize with dummy data
+  // Function to fetch users from the API
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get(USERS_ENDPOINT);
+      setUsers(response.data);
+      setError('');
+    } catch (err) {
+      console.error('Error fetching users:', err);
+      setError('Failed to load users. Please try again later.');
+      // Use empty array if fetch fails
+      setUsers([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch users from the backend API
   useEffect(() => {
-    setUsers(dummyUsers);
-    setLoading(false);
+    fetchUsers();
   }, []);
 
   const handleDelete = async (id) => {
@@ -107,7 +91,7 @@ const UserList = () => {
   const confirmDelete = async () => {
     try {
       // Make API call to delete the user
-      await axios.delete(`${API_URL}/${confirmModal.userId}`);
+      await api.delete(`${USERS_ENDPOINT}/${confirmModal.userId}`);
 
       // Update local state after successful deletion
       const updatedUsers = users.filter((user) => user.id !== confirmModal.userId);
@@ -115,8 +99,8 @@ const UserList = () => {
 
       // Hide the modal
       setConfirmModal({ show: false, userId: null, message: '' });
-    } catch (error) {
-      console.error('Error deleting user:', error);
+    } catch (err) {
+      console.error('Error deleting user:', err);
       setConfirmModal({
         show: true,
         userId: confirmModal.userId,
@@ -140,20 +124,24 @@ const UserList = () => {
       // If editing an existing user
       if (userData && userData.id) {
         // Make API call to update the user
-        const response = await axios.put(`${API_URL}/${userData.id}`, userData);
+        const response = await api.put(`${USERS_ENDPOINT}/${userData.id}`, userData);
         const updatedUser = response.data;
 
         // Update local state after successful update
         setUsers((prevUsers) => prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user)));
-      } else if (userData) {
-        // For adding new users (keeping this simple for now)
-        const newId = Math.max(...users.map((user) => user.id), 0) + 1;
-        setUsers([...users, { ...userData, id: newId }]);
+      } else {
+        // For new users, fetch all users again to get the server-generated ID
+        await fetchUsers();
       }
+
+      // Reset form state
       setEditUser(null);
       setShowAddForm(false);
-    } catch (error) {
-      console.error('Error saving user:', error);
+
+      // Make sure to refresh the list regardless of the operation
+      fetchUsers();
+    } catch (err) {
+      console.error('Error saving user:', err);
       // You could add error handling UI here
     }
   };
@@ -170,7 +158,7 @@ const UserList = () => {
         <button type="button" className="add-button" onClick={handleAddNew}>Add New User</button>
       </div>
 
-      {/* {error && <div className="error-message">{error}</div>} */}
+      {error && <div className="error-message">{error}</div>}
 
       {showAddForm && (
         <div className="form-section">
@@ -204,22 +192,40 @@ const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {users.map((user) => {
+                 return (
                   <tr key={user.id}>
-                    <td>{`${user.first_name} ${user.last_name}`}</td>
-                    <td>{user.email}</td>
-                    <td>{`${user.city}, ${user.country}`}</td>
-                    <td>{user.phone_number}</td>
-                    <td className="actions">
-                      <button type="button" className="edit-button" onClick={() => handleEdit(user)}>
-                        Edit
-                      </button>
-                      <button type="button" className="delete-button" onClick={() => handleDelete(user.id)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                  <td>
+                    <div className="user-name-cell">
+                      {user.profile_picture ? (
+                        <img
+                          src={`http://localhost:3002/api/users/getUserPhoto${user.profile_picture}`}
+                          alt={`${user.first_name} ${user.last_name}`}
+                          className="user-avatar"
+                        />
+                      ) : (
+                        <div className="user-avatar-placeholder">
+                          {user.first_name && user.first_name.charAt(0)}
+                          {user.last_name && user.last_name.charAt(0)}
+                        </div>
+                      )}
+                      <span>{`${user.first_name} ${user.last_name}`}</span>
+                    </div>
+                  </td>
+                  <td>{user.email}</td>
+                  <td>{`${user.city}, ${user.country}`}</td>
+                  <td>{user.phone_number}</td>
+                  <td className="actions">
+                    <button type="button" className="edit-button" onClick={() => handleEdit(user)}>
+                      Edit
+                    </button>
+                    <button type="button" className="delete-button" onClick={() => handleDelete(user.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+                 )
+            })}
               </tbody>
             </table>
           )}

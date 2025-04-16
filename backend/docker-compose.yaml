@@ -1,13 +1,38 @@
 # docker-compose.yml
 version: "3"
 services:
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    image: frontend-app
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    env_file:
+      - ../frontend/.env
+    restart: always
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+
   backend:
     container_name: backend
     build: .
     depends_on:
       - database
     environment:
-      PG_HOST: database
+        PG_HOST: database
+        PG_PORT: 5432
+        PG_USER: app_user
+        PG_PASSWORD: coding_test_password
+        PG_DATABASE: datatys_db
+        SECRET: test-dev-secret
+    # env_file:
+    #   - .env
     volumes:
       - .:/app/
     working_dir: /app

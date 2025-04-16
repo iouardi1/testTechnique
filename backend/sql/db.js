@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 const chalk = require('chalk');
+require('dotenv').config();
 
 const pool = new Pool({
   user: process.env.PG_USER,
@@ -8,6 +9,7 @@ const pool = new Pool({
   password: process.env.PG_PASSWORD,
   port: process.env.PG_PORT,
 });
+
 
 pool.on('error', (err) => {
   console.log(chalk.hex('#34ace0').bold(err));

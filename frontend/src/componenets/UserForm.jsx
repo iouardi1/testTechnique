@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import './UserForm.css';
 import FileUpload from './FileUpload';
+import api from '../tools/api';
 
-const API_URL = `${process.env.REACT_APP_API_URL || 'http://localhost:3002'}/api/users`;
+// API endpoint
+const USERS_ENDPOINT = '/api/users';
 
 const UserForm = ({ user, onSuccess }) => {
   const [profilePicture, setProfilePicture] = useState(null);
@@ -22,37 +23,42 @@ const UserForm = ({ user, onSuccess }) => {
     try {
       // Reset any previous error
       setFormError('');
-      let userData = { ...data };
 
-      // If profile picture was uploaded, handle it
+      // Create FormData for all submissions to handle files
+      const formData = new FormData();
+
+      // Add all form fields to FormData
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+
+      // If profile picture was uploaded, add it to FormData
       if (profilePicture) {
-        // For example using FormData
-        const formData = new FormData();
         formData.append('profile_picture', profilePicture);
-
-        // Add other form data
-        Object.keys(data).forEach((key) => {
-          formData.append(key, data[key]);
-        });
-
-        // This is just a placeholder for demonstration
-        console.log('Would upload profile picture:', profilePicture.name);
       }
 
       let response;
+
       if (user && user.id) {
         // Update existing user
-        response = await axios.put(`${API_URL}/${user.id}`, userData);
-        userData = response.data;
+        response = await api.put(`${USERS_ENDPOINT}/${user.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
       } else {
         // Create new user
-        response = await axios.post(API_URL, userData);
-        userData = response.data;
+        response = await api.post(USERS_ENDPOINT, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
       }
 
+      const userData = response.data;
       if (onSuccess) onSuccess(userData);
     } catch (error) {
-      console.error('Error saving user:', error);
+      console.error('Error saving user:', error.message || 'Unknown error');
       setFormError('Failed to save user. Please try again.');
     }
   };
