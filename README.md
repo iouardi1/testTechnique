@@ -15,25 +15,16 @@ A complete user management system with CRUD operations and photo upload function
 - Docker
 - Docker Compose
 
-## Quick Start
-
-1. Clone the repository
-2. Run the setup script:
-
-```bash
-./setup.sh
-```
-
 The application will be available at:
-- Frontend: http://localhost
+- Frontend: http://localhost:3000
 - Backend API: http://localhost:3002
 
 ## Manual Setup
 
-If you prefer to run the setup manually:
-
 ```bash
 # Build and start containers
+cd backend
+npm i
 docker-compose build
 docker-compose up -d
 ```

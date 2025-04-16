@@ -49,7 +49,7 @@ const FileUpload = ({ onFileChange }) => {
               <input
                 type="file"
                 id="fileInput"
-                accept="image/png, image/jpeg, image/jpg"
+                accept="image/png, image/jpeg, image/jpg"x
                 onChange={handleFileChange}
                 className="file-input"
               />

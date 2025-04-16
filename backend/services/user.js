@@ -32,4 +32,5 @@ const authenticateUser = async (email, password) => {
 
 module.exports = {
   authenticateUser,
+  hashPassword,
 };
